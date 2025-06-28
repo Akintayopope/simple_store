@@ -8,14 +8,42 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-require 'faker'
+# require "csv"
+# require 'faker'
 
-676.times do
+# 676.times do
+#   Product.create!(
+#     title: Faker::Commerce.product_name,
+#     price: Faker::Commerce.price(range: 5.0..500.0),
+#     stock_quantity: Faker::Number.between(from: 1, to: 100)
+#   )
+# end
+
+# puts "Seeded 676 products successfully."
+
+require "csv"
+
+# Clear old data
+Product.destroy_all
+Category.destroy_all
+
+# Load and parse the CSV
+csv_file = Rails.root.join("db/products.csv")
+csv_data = File.read(csv_file)
+
+products = CSV.parse(csv_data, headers: true)
+
+products.each do |row|
+  category_name = row["category"]
+  category = Category.find_or_create_by(name: category_name)
+
   Product.create!(
-    title: Faker::Commerce.product_name,
-    price: Faker::Commerce.price(range: 5.0..500.0),
-    stock_quantity: Faker::Number.between(from: 1, to: 100)
+    title: row["name"],
+    price: row["price"],
+    description: row["description"],
+    stock_quantity: row["stock quantity"],
+    category: category
   )
 end
 
-puts "Seeded 676 products successfully."
+puts "Seeded #{Category.count} categories and #{Product.count} products."
