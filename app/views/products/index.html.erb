@@ -1,27 +1,7 @@
-# <h1>All Products</h1>
-
-# <table border="1" cellpadding="8" cellspacing="0">
-#   <thead>
-#     <tr>
-#       <th>Title</th>
-#       <th>Price</th>
-#       <th>Stock Quantity</th>
-#     </tr>
-#   </thead>
-#   <tbody>
-#     <% @products.each do |product| %>
-#       <tr>
-#         <td><%= link_to product.title, product_path(product) %></td>
-#         <td>$<%= '%.2f' % product.price %></td>
-#         <td><%= product.stock_quantity %></td>
-#       </tr>
-#     <% end %>
-#   </tbody>
-# </table>
 
 <h1>All Products</h1>
 
-<table border="1" cellpadding="8" cellspacing="0">
+<table>
   <thead>
     <tr>
       <th>Title</th>
@@ -34,9 +14,9 @@
     <% @products.each do |product| %>
       <tr>
         <td><%= link_to product.title, product_path(product) %></td>
-        <td>$<%= '%.2f' % product.price %></td>
+        <td><%= number_to_currency(product.price) %></td>
         <td><%= product.stock_quantity %></td>
-        <td><%= product.category.name %></td>
+        <td><%= product.category&.name || "Uncategorized" %></td>
       </tr>
     <% end %>
   </tbody>
